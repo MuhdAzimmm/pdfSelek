@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF Merger</title>
+  <title>SplitMerge PDF</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -160,14 +160,15 @@
     }
 
     .split-options {
-      display: none;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: #2980b9;
-      padding: 10px;
-      border-radius: 6px;
-    }
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    left: 10px;
+    background-color: #2980b9;
+    padding: 10px;
+    border-radius: 6px;
+}
 
     .split-options button {
       background-color: #e74c3c;
@@ -196,8 +197,8 @@
 </head>
 <body>
   <div class="container">
-    <h1>Merge PDFs</h1>
-    <p class="instructions">Upload your PDFs and adjust their order by clicking the arrows to rearrange before merging. Click or touch one of the pdf that you want to split then write the page you want to keep.</p>
+    <h1>SplitMerge PDFs</h1>
+    <p class="instructions">Upload your PDFs and adjust their order by clicking the arrows to rearrange before merging. Click or touch one of the pdf that you want to split then write the page you want to keep. If you want to hide the split pdf button, click outside the pdf box</p>
     <input type="file" id="pdfUpload" multiple accept=".pdf" />
     <div id="pdfPreviewContainer" class="pdf-preview-container"></div>
     <button id="mergeButton">Merge PDFs</button>
@@ -288,18 +289,36 @@
           child.dataset.fileIndex = index;
         });
       }
+
+      // Hide split options after moving
+    const allSplitOptions = document.querySelectorAll(".split-options");
+    allSplitOptions.forEach((splitOptions) => {
+      splitOptions.style.display = "none";
+    });
     }
 
     pdfPreviewContainer.addEventListener('click', (e) => {
-  // Show the "Split PDF" button when any pdf preview is clicked
+  // Prevent split options from appearing if a "move" button is clicked
   const previewDiv = e.target.closest('.pdf-preview');
-  if (previewDiv) {
+  if (previewDiv && !e.target.closest('.controls')) {
     const splitOptions = previewDiv.querySelector('.split-options');
     if (splitOptions) {
       splitOptions.style.display = 'block';
     }
   }
 });
+
+// Event listener to hide split options when clicking outside the preview container
+document.addEventListener("click", (e) => {
+  const isClickInside = pdfPreviewContainer.contains(e.target);
+  if (!isClickInside) {
+    const allSplitOptions = document.querySelectorAll(".split-options");
+    allSplitOptions.forEach((splitOptions) => {
+      splitOptions.style.display = "none";
+    });
+  }
+});
+
 
 async function splitPdf(fileIndex) {
   const file = pdfFiles[fileIndex];
