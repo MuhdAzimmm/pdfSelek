@@ -45,6 +45,7 @@
     }
     #pdfViewer {
       width: 100%;
+      text-align: center;
       height: 500px; /* Fixed height for the preview */
       border: 1px solid #ddd;
       margin-top: 20px;
@@ -74,7 +75,7 @@
   <div class="container">
     <h1>PDF Splitter</h1>
     <input type="file" id="pdfInput" accept="application/pdf">
-    <input type="text" id="pageNumbers" placeholder="Enter page numbers (e.g., 1,3,5)">
+    <input type="text" id="pageNumbers" placeholder="Enter page numbers (e.g., 1-5,7,9)">
     <button id="splitButton">Split PDF</button>
     <p id="status"></p>
   </div>
@@ -165,6 +166,30 @@
       pageNumbersInput.value = currentPages.join(',');
     }
 
+    // New helper function to parse page ranges like "1-5"
+    function parsePageRanges(input) {
+      const pages = [];
+      const ranges = input.split(',');
+
+      ranges.forEach(range => {
+        if (range.includes('-')) {
+          const [start, end] = range.split('-').map(Number);
+          if (start && end && start <= end) {
+            for (let i = start; i <= end; i++) {
+              pages.push(i);
+            }
+          }
+        } else {
+          const num = parseInt(range.trim(), 10);
+          if (!isNaN(num)) {
+            pages.push(num);
+          }
+        }
+      });
+
+      return pages;
+    }
+
     document.getElementById('splitButton').addEventListener('click', async () => {
       const pageNumbersInput = document.getElementById('pageNumbers');
       const statusElement = document.getElementById('status');
@@ -174,10 +199,7 @@
         return;
       }
 
-      const pageNumbers = pageNumbersInput.value
-        .split(',')
-        .map(num => parseInt(num.trim(), 10))
-        .filter(num => !isNaN(num));
+      const pageNumbers = parsePageRanges(pageNumbersInput.value);
 
       if (!pageNumbers.length) {
         statusElement.textContent = 'Please enter valid page numbers.';
