@@ -3,275 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PDF Splitter</title>
+  <title>PDF Selek</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 0;
+      padding: 0;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #1a1a1a, #2c3e50); /* Dark gradient background */
+      color: #ecf0f1; /* Light text color */
+      flex-direction: column;
     }
+
     .container {
-      max-width: 600px;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      width: 100%;
-    }
-    input, button {
-      margin: 10px 0;
-      font-size: 16px;
-      width: 100%;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    #preview {
-      margin-top: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    #pdfViewer {
-      width: 100%;
-      height: auto;
       text-align: center;
-      margin-top: 20px;
-      border: 1px solid #ddd;
-      overflow: auto; /* Allow scrolling inside the container */
-      padding: 10px;
-      box-sizing: border-box;
+      background: rgba(26, 32, 38, 0.85); /* Semi-transparent dark background */
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4); /* Darker shadow */
+      width: 90%;
+      max-width: 800px;
     }
 
-    @media screen and (max-width: 768px) {
-      #pdfViewer img {
-        width: 90%; /* Adjust the width to fit on smaller screens */
-        height: auto;
-      }
-    }
-
-    .loading {
-      text-align: center;
-      font-size: 18px;
-      color: #888;
-    }
-    
-    /* Responsive layout */
-    @media screen and (max-width: 768px) {
-      .container {
-        width: 100%;
-        margin: 10px 0;
-      }
-      #pdfViewer {
-        height: 300px; /* Adjust height on mobile */
-      }
-    }
-
-    /* Add separator line between pages */
-    .page-container {
-      display: inline-block;
-      text-align: center;
+    .header {
+      font-size: 32px;
+      font-weight: 700;
       margin-bottom: 20px;
-      position: relative;
-      border-bottom: 2px solid #ddd; /* Line separator between pages */
-      padding-bottom: 15px;
+      color: #ecf0f1;
+      text-transform: uppercase;
     }
 
-    /* Style for the page number */
-    .page-number {
-      text-align: center;
-      margin-top: 5px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #4CAF50; /* Make the page number stand out */
+    .intro-text {
+      font-size: 18px;
+      color: #bdc3c7;
+      margin-bottom: 40px;
     }
+
+    .link-button {
+      display: inline-block;
+      background-color: #34495e; /* Darker blue-grey for buttons */
+      color: white;
+      padding: 15px 30px;
+      border-radius: 6px;
+      font-size: 20px;
+      text-decoration: none;
+      margin: 15px;
+      transition: all 0.3s ease;
+      transform: scale(1);
+    }
+
+    .link-button:hover {
+      background-color: #1abc9c; /* Teal color on hover */
+      transform: scale(1.05); /* Slight scale on hover */
+    }
+
+    .link-button:active {
+      transform: scale(1.02); /* Slight shrink on click */
+    }
+
+    .footer {
+      text-align: center;
+      color: #bdc3c7;
+      font-size: 12px;
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #1a1a1a;
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: 70%;
+      }
+
+      .header {
+        font-size: 28px;
+      }
+
+      .link-button {
+        font-size: 15px;
+        padding: 12px 25px;
+      }
+    }
+
+    
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>PDF Splitter</h1>
-    <input type="file" id="pdfInput" accept="application/pdf">
-    <input type="text" id="pageNumbers" placeholder="Enter page numbers (e.g., 1-5,7,9)">
-    <button id="splitButton">Split PDF</button>
-    <p id="status"></p>
-  </div>
 
   <div class="container">
-    <h2>PDF Preview</h2>
-    <div id="pdfViewer"></div>
-    <p id="loadingMessage" class="loading" style="display: none;">Loading PDF preview...</p>
+    <div class="header">
+      PDF Selek
+    </div>
+    <p class="intro-text">Welcome to the PDF Selek! Choose an option below to merge or split your PDFs effortlessly. The easiest way to handle your PDFs.</p>
+
+    <div>
+      <a href="merge.html" class="link-button">Merge PDF</a>
+      <a href="split.html" class="link-button">Split PDF</a>
+    </div>
   </div>
 
-  <!-- Load PDF.js library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <div class="footer">
+    <p>&copy; 2025 Muhammad Azim. All rights reserved.</p>
+  </div>
 
-  <script>
-    const pdfInput = document.getElementById('pdfInput');
-    const pdfViewer = document.getElementById('pdfViewer');
-    const loadingMessage = document.getElementById('loadingMessage');
-
-    pdfInput.addEventListener('change', async (event) => {
-      const file = event.target.files[0];
-
-      if (file) {
-        loadingMessage.style.display = 'block'; // Show loading message
-
-        const fileReader = new FileReader();
-
-        fileReader.onload = async function () {
-          const typedArray = new Uint8Array(this.result);
-          const pdf = await pdfjsLib.getDocument(typedArray).promise;
-
-          // Clear previous previews
-          pdfViewer.innerHTML = '';
-
-          // Render the first page for preview
-          renderPdfPage(pdf, 1);
-        };
-
-        fileReader.readAsArrayBuffer(file);
-      }
-    });
-
-    async function renderPdfPage(pdf, pageNumber) {
-      try {
-        const page = await pdf.getPage(pageNumber);
-        const viewport = page.getViewport({ scale: 1.0 }); // Keep scale at 1 for better resolution
-
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
-
-        await page.render({ canvasContext: context, viewport }).promise;
-
-        // Create an image element for the page preview
-        const img = document.createElement('img');
-        img.src = canvas.toDataURL();
-        img.alt = `Page ${pageNumber}`;
-        img.style.marginBottom = '10px';
-        img.style.cursor = 'pointer';
-        img.style.maxWidth = '100%'; // Ensure it fits the container
-        img.style.maxHeight = '100%'; // Ensure it fits the container
-        img.onclick = () => selectPage(pageNumber);
-
-        // Add page number below the image
-        const pageNumberDiv = document.createElement('div');
-        pageNumberDiv.textContent = `Page ${pageNumber}`;
-        pageNumberDiv.classList.add('page-number');
-
-        // Create a container for the page image and number
-        const pageContainer = document.createElement('div');
-        pageContainer.classList.add('page-container');
-        pageContainer.appendChild(img);
-        pageContainer.appendChild(pageNumberDiv);
-
-        pdfViewer.appendChild(pageContainer);
-
-        // Continue rendering the next page, if any
-        if (pageNumber < pdf.numPages) {
-          renderPdfPage(pdf, pageNumber + 1);
-        } else {
-          loadingMessage.style.display = 'none'; // Hide loading message once rendering is complete
-        }
-      } catch (error) {
-        console.error("Error rendering page:", error);
-        loadingMessage.textContent = "Error loading PDF. Please try again.";
-      }
-    }
-
-    function selectPage(pageNumber) {
-      const pageNumbersInput = document.getElementById('pageNumbers');
-      const currentPages = pageNumbersInput.value.split(',').map(num => parseInt(num.trim(), 10)).filter(num => !isNaN(num));
-
-      // Toggle page selection
-      if (currentPages.includes(pageNumber)) {
-        const index = currentPages.indexOf(pageNumber);
-        currentPages.splice(index, 1); // Remove the page number
-      } else {
-        currentPages.push(pageNumber); // Add the page number
-      }
-
-      // Update the input field with selected page numbers
-      pageNumbersInput.value = currentPages.join(',');
-    }
-
-    // New helper function to parse page ranges like "1-5"
-    function parsePageRanges(input) {
-      const pages = [];
-      const ranges = input.split(',');
-
-      ranges.forEach(range => {
-        if (range.includes('-')) {
-          const [start, end] = range.split('-').map(Number);
-          if (start && end && start <= end) {
-            for (let i = start; i <= end; i++) {
-              pages.push(i);
-            }
-          }
-        } else {
-          const num = parseInt(range.trim(), 10);
-          if (!isNaN(num)) {
-            pages.push(num);
-          }
-        }
-      });
-
-      return pages;
-    }
-
-    document.getElementById('splitButton').addEventListener('click', async () => {
-      const pageNumbersInput = document.getElementById('pageNumbers');
-      const statusElement = document.getElementById('status');
-
-      if (!pdfInput.files.length) {
-        statusElement.textContent = 'Please upload a PDF file.';
-        return;
-      }
-
-      const pageNumbers = parsePageRanges(pageNumbersInput.value);
-
-      if (!pageNumbers.length) {
-        statusElement.textContent = 'Please enter valid page numbers.';
-        return;
-      }
-
-      const file = pdfInput.files[0];
-      const arrayBuffer = await file.arrayBuffer();
-      const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
-
-      const newPdf = await PDFLib.PDFDocument.create();
-
-      for (const pageNumber of pageNumbers) {
-        if (pageNumber > 0 && pageNumber <= pdfDoc.getPageCount()) {
-          const [copiedPage] = await newPdf.copyPages(pdfDoc, [pageNumber - 1]);
-          newPdf.addPage(copiedPage);
-        } else {
-          statusElement.textContent = `Page number ${pageNumber} is out of range.`;
-          return;
-        }
-      }
-
-      const newPdfBytes = await newPdf.save();
-
-      const blob = new Blob([newPdfBytes], { type: 'application/pdf' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'split.pdf';
-      link.click();
-
-      statusElement.textContent = 'PDF successfully split and downloaded!';
-    });
-  </script>
 </body>
 </html>
